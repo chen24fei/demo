@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-2.5.xsd ">
+	<context:component-scan base-package="cn.test.dao.impl,cn.test.service.impl,cn.test.action"></context:component-scan>
+	<!-- 配置数据源 -->
+	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="123"></property>
+		<property name="maxPoolSize" value="10" />
+		<property name="minPoolSize" value="3" />
+		<property name="acquireIncrement" value="2" />
+		<property name="initialPoolSize" value="2" />
+		<property name="maxIdleTime" value="6000" />
+	</bean>
+	<!-- 会话工厂bean(Spring整合hibernate) -->
+	<bean class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" id="sessionFactory">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- hibernate 属性 -->
+		<property name="hibernateProperties">
+			<value>
+			hibernate.dialect=org.hibernate.dialect.MySQLDialect
+			hibernate.hbm2ddl.auto=create
+			hibernate.show_sql=true
+			hibernate.format_sql=false</value>
+		</property>
+		<!-- hibernate映射文件目录 -->
+		<property name="mappingDirectoryLocations">
+			<value>classpath:cn/test/domain</value>
+		</property>
+	</bean>
+	<!-- 事务管理器 -->
+	<bean name="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!--声明式事务通知  -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" isolation="DEFAULT" propagation="REQUIRED"/> 
+			<tx:method name="update*" isolation="DEFAULT" propagation="REQUIRED"/>
+			<tx:method name="deleteSurvey" isolation="DEFAULT" propagation="REQUIRES_NEW"/> 
+			<tx:method name="delete*" isolation="DEFAULT" propagation="REQUIRED"/> 
+			<tx:method name="batch*" isolation="DEFAULT" propagation="REQUIRED"/> 
+			<tx:method name="load*" isolation="DEFAULT" propagation="REQUIRED" read-only="true"/>
+		    <tx:method name="get*" isolation="DEFAULT" propagation="REQUIRED" read-only="true"/> 
+		    <tx:method name="find*" isolation="DEFAULT" propagation="REQUIRED" read-only="true"/> 
+		    <tx:method name="*" isolation="DEFAULT" propagation="REQUIRED"/>
+		</tx:attributes> 
+	</tx:advice>
+	<!-- aop配置 -->
+	<aop:config >
+		<aop:pointcut id="txPoint"  expression="execution(* cn.test.service.*Service.*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
+	</aop:config>
+</beans>

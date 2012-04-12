@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.test.domain">
+	<class name="Question" table="questions" lazy="true">
+		<id name="id" column="id" type="integer">
+			<generator class="native" />
+		</id>
+		<property name="title" column="title" type="string" length="200" />
+		<property name="questionType" column="questiontype" type="integer" />
+		<property name="questionOptions" column="questionoptions" type="string" length="200" />
+		<property name="rowTitles" column="rowtitles" type="string" length="200" />
+		<property name="colTitles" column="coltitles" type="string" length="200" />
+		<!-- column属性和子元素是互斥的,只能用一个 -->
+		<property name="other" type="boolean">
+			<!-- 可以显式指定字段类型,bit -->
+			<column name="other" sql-type="int" />
+		</property>
+		<property name="otherType" column="othertype" type="integer" />
+		<property name="otherSelectContent" column="otherselectcontent" type="string" length="200" />
+		
+		<!-- 映射Question 到 Page的多对一关联 -->
+		<many-to-one name="page" column="pageid" class="Page" />
+	</class>
+</hibernate-mapping>

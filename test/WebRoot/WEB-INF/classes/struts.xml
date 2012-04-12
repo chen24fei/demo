@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<package name="survyPackage" extends="struts-default" namespace="/survy">
+		<action name="toSurvy" class="userAction" method="doTest">
+			<result>/index.jsp</result>
+		</action>
+	</package>
+</struts>

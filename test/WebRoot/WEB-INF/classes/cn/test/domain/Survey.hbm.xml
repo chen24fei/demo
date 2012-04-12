@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.test.domain">
+	<class name="Survey" table="surveys" lazy="true">
+		<id name="id" column="id" type="integer">
+			<generator class="native" />
+		</id>
+		<property name="createDate" column="createdate" type="timestamp" update="false"/>
+		<property name="doneText" column="donetext" type="string" length="50" />
+		<property name="exitText" column="exittext" type="string" length="50" />
+		<property name="nextText" column="nexttext" type="string" length="50" />
+		<property name="preText" column="pretext" type="string" length="50" />
+		<property name="title" column="title" type="string" length="200"/>
+		<!-- 存放用户上传的logo路径,不能更新 -->
+		<property name="logoPath" column="logopath" type="string" length="100" update="false"/>
+		
+		<!-- 计算列formula:公式(sql表达式) -->
+<!--		<property name="minOrderNumber" formula="(select min(p.ordernumber) from lsp_pages p where p.surveyid = id)" />-->
+<!--		<property name="maxOrderNumber" formula="(select max(p.ordernumber) from lsp_pages p where p.surveyid = id)" />-->
+		<!-- 映射Survey到Page之间的一对多关联 -->
+		<set name="pages" lazy="true" inverse="true" fetch="select" order-by="ordernumber asc">
+			<key column="surveyid" />
+			<one-to-many class="Page" />
+		</set>
+		<!-- 建立Survey到User之间多对一关联 -->
+		<many-to-one name="user" column="userid" class="User" /> 
+	</class>
+</hibernate-mapping>

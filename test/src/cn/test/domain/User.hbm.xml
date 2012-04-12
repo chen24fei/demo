@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.test.domain">
+	<class name="User" table="users" lazy="true">
+		<id name="id" column="id" type="integer">
+			<generator class="native" /><!-- 根据数据库底层选择主键生产策略oracle会使用默认的sequence -->
+		</id>
+		<property name="email" column="email" type="string" length="20" />
+		<property name="password" column="password" type="string" length="20" />
+		<property name="nickName" column="nickname" type="string" length="20" />
+		<property name="regDate" column="regdate" type="timestamp" update="false"/>
+	</class>
+</hibernate-mapping>

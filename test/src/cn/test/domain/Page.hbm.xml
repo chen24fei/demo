@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.test.domain">
+	<class name="Page" table="pages" lazy="false">
+		<id name="id" column="id" type="integer">
+			<generator class="native" />
+		</id>
+		<property name="title" column="title" type="string" length="20" />
+		<property name="description" column="description" type="string" length="100" />
+		<property name="orderNumber" column="ordernumber" type="float" />
+		<!-- 映射从Page到Question之间的一对多关联 -->
+		<set name="questions" lazy="true" fetch="select" inverse="true" order-by="id">
+			<key column="pageid" />
+			<one-to-many class="Question" />
+		</set>
+		<!-- 建立Page到Survey之间的多对一关联 -->
+		<many-to-one name="survey" column="surveyid" class="Survey" fetch="join" lazy="proxy"/>
+	</class>
+</hibernate-mapping>
