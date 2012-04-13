@@ -4,7 +4,7 @@
 	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 <struts>
 	<package name="survyPackage" extends="struts-default" namespace="/survy">
-		<action name="toSurvy" class="userAction" method="doTest">
+		<action name="toSurvy" class="userAction" method="reg">
 			<result>/index.jsp</result>
 		</action>
 	</package>
