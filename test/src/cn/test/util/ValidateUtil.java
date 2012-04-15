@@ -1,5 +1,6 @@
 package cn.test.util;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -25,6 +26,7 @@ public class ValidateUtil {
 	 * @param col
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static boolean isValid(Collection col){
 		if(col != null && !col.isEmpty()){
 			return true;

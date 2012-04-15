@@ -3,9 +3,25 @@
 	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
 	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 <struts>
-	<package name="survyPackage" extends="struts-default" namespace="/survy">
-		<action name="toSurvy" class="userAction" method="reg">
+	<package name="survy" extends="struts-default"></package>
+	<package name="survyPackage" extends="survy" namespace="/survy">
+	</package>
+	<!-- action转jsp -->
+	<package name="default" extends="struts-default" namespace="/">
+		<action name="*">
+			<result>{1}.jsp</result>
+		</action>
+	</package>
+	<!-- 用户操作 -->
+	<package name="user" extends="survy" namespace="/user">
+		<!-- 注册 -->
+		<action name="toReg" class="userAction" method="reg">
+			<result name="input">/reg.jsp</result>
 			<result>/index.jsp</result>
+		</action>
+		<action name="login" class="logonAction">
+			<result>/index.jsp</result>
+			<result name="input">/index.jsp</result>
 		</action>
 	</package>
 </struts>
